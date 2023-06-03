@@ -72,6 +72,7 @@ class SendEmailVerificationCodeView(APIView):
         verification_code, _ = (
             VerificationCode.objects.update_or_create(email=email, defaults={"code": code, "is_verified": False})
         )
+
         verification_code.expired_at = verification_code.last_sent_time + timedelta(seconds=30)
         verification_code.save(update_fields=["expired_at"])
         subject = "Email registration"
